@@ -17,9 +17,8 @@ Function Wait-ForPortNotAvailable {
         [Parameter(Mandatory)][Alias("IPAddress")]$ComputerName,
         [Parameter(Mandatory)]$PortNumbertoMonitor
     )
-
-    do {
+    While (Test-NetConnection -ComputerName $ComputerName -Port $PortNumbertoMonitor | Where { $_.TcpTestSucceeded }) {
         Write-Verbose "Waiting for $ComputerName to shutdown..."
         sleep 3
-    } While (Test-NetConnection -ComputerName $ComputerName -Port $PortNumbertoMonitor | Where { $_.TcpTestSucceeded })
+    }
 }
